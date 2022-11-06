@@ -7,6 +7,7 @@
 //     'past',
 // ];
 const wordRate = .5;
+let correct = true;
 let listOfSpellingWords = [
     'whip',
     'whale',
@@ -22,7 +23,7 @@ let listOfSpellingWords = [
 // data 
 let word = '';
 let index = 0;
-let points = 0;
+let points = 3;
 const goodJobWords = [
     'good job',
     'well done',
@@ -67,6 +68,7 @@ const incorrectWords = [
 ];
 const copyOfListOfSpellingWords = [...listOfSpellingWords];
 function pickRandomWord() {
+    correct = true;
     printMessage('-');
     if (listOfSpellingWords.length === 0) {
         listOfSpellingWords = [...copyOfListOfSpellingWords];
@@ -149,8 +151,16 @@ function checkLetter(key) {
                 sayWord(randomFromArray(goodJobWords));
                 sayWord(copyWord);
             }, 500);
+            setTimeout(() => {
+                if (correct === true) {
+                    right(copyWord);
+                } else {
+                    wrong(copyWord);
+                }
+            });
         }
     } else {
+        correct = false;
         if (index === word.length) {
             sayWord(randomFromArray(incorrectWords));
             const copyWord = word;
@@ -188,4 +198,12 @@ function backspace(){
         index--;
         document.querySelector('.box').children[index].innerHTML = '_';
     }
+}
+
+function right(word){
+    document.querySelector('.right').innerHTML += word + `<div class='correct'>${word}</div>`;
+}
+
+function wrong(word){
+    document.querySelector('.wrong').innerHTML += word + `<div class='incorrect'>${word}</div>`;
 }
