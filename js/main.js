@@ -67,7 +67,7 @@ const incorrectWords = [
 ];
 const copyOfListOfSpellingWords = [...listOfSpellingWords];
 function pickRandomWord() {
-    printMessage('');
+    printMessage('-');
     if (listOfSpellingWords.length === 0) {
         listOfSpellingWords = [...copyOfListOfSpellingWords];
     }
