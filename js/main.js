@@ -67,6 +67,7 @@ const incorrectWords = [
 ];
 const copyOfListOfSpellingWords = [...listOfSpellingWords];
 function pickRandomWord() {
+    printMessage('');
     if (listOfSpellingWords.length === 0) {
         listOfSpellingWords = [...copyOfListOfSpellingWords];
     }
@@ -125,34 +126,44 @@ function createLettersButton() {
         button.innerHTML += letter.toLowerCase();
         document.querySelector('.letters').append(button);
         button.addEventListener('click', () => {
+            debugger;
             checkLetter(letter);
+            sayWord(letter);
         })
     });
 }
 function checkLetter(key) {
     if (!word) return;
+    const copyWord = word;
     if (key.toLowerCase() === word[index].toLowerCase()) {
         document.querySelector('.box').children[index].innerHTML = key;
         index++;
         if (index === word.length) {
-            sayWord(randomFromArray(goodJobWords));
+            
             document.querySelector('.box').innerHTML = '';
             index = 0;
             points++;
             updatePoints();
             word = '';
+            setTimeout(() => {
+                sayWord(randomFromArray(goodJobWords));
+                sayWord(copyWord);
+            }, 500);
         }
     } else {
-        sayWord(randomFromArray(incorrectWords));
-        const copyWord = word;
-        copyWord.split('').forEach((letter, i) => {
-                sayWord(letter); 
-        });
-        sayWord(word, true);
-        document.querySelector('.box').innerHTML = '';
-        index = 0;
-        updatePoints();
-        word = '';
+        if (index === word.length) {
+            sayWord(randomFromArray(incorrectWords));
+            const copyWord = word;
+            copyWord.split('').forEach((letter, i) => {
+                    sayWord(letter); 
+            });
+            sayWord(word, true);
+            document.querySelector('.box').innerHTML = '';
+            index = 0;
+            updatePoints();
+            word = '';
+        }
+       
     }
 }
 function randomFromArray(arr) {
@@ -160,7 +171,7 @@ function randomFromArray(arr) {
 }
 function printMessage(message, show){
     if (message !== word || show) {
-        document.querySelector('.message').innerHTML = `${word.split('').map(l => `<span class="${l}">${l}</span>`).join('')}`;
+        document.querySelector('.message').innerHTML = `${message.split('').map(l => `<span class="${l}">${l}</span>`).join('')}`;
     }
 }
 updatePoints();
@@ -171,3 +182,10 @@ function showWords() {
 }
 
 showWords();
+
+function backspace(){
+    if (index > 0){
+        index--;
+        document.querySelector('.box').children[index].innerHTML = '_';
+    }
+}
